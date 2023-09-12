@@ -35,15 +35,32 @@ checkButton.addEventListener('click', async (event) => {
     // fetch from /cgi-bin/param.cgi with param f=get_device_conf
     const response2 = await fetch('/cgi-bin/param.cgi?f=get_device_conf');
     if (response2.ok) {
-        const json2 = await response2.json();
-        console.log(JSON.stringify(json2));
+        const text = await response2.text();
+        const lines = text.split('\n');
+        const versionInfoLine = lines.find(line => line.startsWith('versioninfo='));
+        // Split by '=' and remove quotes
+        const versionInfo = versionInfoLine.split('=')[1].replace(/"/g, ''); 
+        const regex = /SOC v\d+(\.\d+)*\d+/;
+        const match = versionInfo.match(regex);
+        const version = match[0].substring(4);
+        console.log('Version Info:', version);
 
-        const versioninfo = json2.versioninfo;
-        console.log('Version Info:', versioninfo);
         const currentVersion = document.getElementById('current-version');
-        currentVersion.innerHTML = versioninfo;
+        currentVersion.innerHTML = version;
     }
-    
+    // check if current version is smaller than latest version to determine if update is needed
+    const current = document.getElementById('current-version').innerHTML;
+    const latest = document.getElementById('latest-version').innerHTML;
+    if (current < latest) {
+        console.log('Update needed');
+        const check = document.getElementById('check-result');
+        check.style.display = 'block';
+    }else{
+        console.log('No update needed');
+        const version= document.getElementById('version-info');
+        version.style.display = 'block';
+    }
+
 
 
 });
