@@ -6,7 +6,7 @@ form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     const formData = new FormData(form);
-    const response = await fetch('/hi/', {
+    const response = await fetch('/', {
         method: 'POST',
         body: formData
     });
@@ -20,27 +20,31 @@ const checkButton = document.getElementById('check-btn');
 console.log(checkButton);
 checkButton.addEventListener('click', async (event) => {
     event.preventDefault();
+    // get latest version
     const response = await fetch('https://firmware.ptzoptics.com/F53.HI/RVU.json');
     if (response.ok) {
         const json = await response.json();
         console.log(JSON.stringify(json));
 
-        if (json.code === 200) {
-            const socVersion = json.data.soc_version;
-            console.log('SOC Version:', socVersion);
-            // create a new div element to display the SOC version
-            const socVersionDiv = document.createElement('div');
-            socVersionDiv.innerHTML = `SOC Version: ${socVersion}`;
-            // append the new div element to the version-info div
-            const versionInfoDiv = document.getElementById('version-info');
-            versionInfoDiv.appendChild(socVersionDiv);
-
-        } else {
-            console.log('Error:', json.code);
-        }
-    } else {
-        console.log('HTTP Error:', response.status);
+        const socVersion = json.data.soc_version;
+        console.log('SOC Version:', socVersion);
+        const latestVersion = document.getElementById('latest-version');      
+        latestVersion.innerHTML = socVersion;
     }
+    // get current version
+    // fetch from /cgi-bin/param.cgi with param f=get_device_conf
+    const response2 = await fetch('/cgi-bin/param.cgi?f=get_device_conf');
+    if (response2.ok) {
+        const json2 = await response2.json();
+        console.log(JSON.stringify(json2));
+
+        const versioninfo = json2.versioninfo;
+        console.log('Version Info:', versioninfo);
+        const currentVersion = document.getElementById('current-version');
+        currentVersion.innerHTML = versioninfo;
+    }
+    
+
 
 });
 
