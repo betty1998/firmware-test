@@ -2,11 +2,10 @@
 // Send form data to server
 const form = document.getElementById('upload-form');
 form.addEventListener('submit', async (event) => {
-    console.log('Form submitted');
     event.preventDefault();
 
     const formData = new FormData(form);
-    const spinner = document.querySelector('div.loader');
+    const spinner = document.getElementById('upload-spinner');
     spinner.style.display = 'block';
     const response = await fetch('/', {
         method: 'POST',
@@ -22,22 +21,29 @@ form.addEventListener('submit', async (event) => {
 
 // add event listener to the check button
 const checkButton = document.getElementById('check-btn');
-console.log(checkButton);
 checkButton.addEventListener('click', async (event) => {
     event.preventDefault();
-    // get latest version
+    
     const response = await fetch('https://firmware.ptzoptics.com/F53.HI/RVU.json');
+    let imgName;
+    let logName;
+
     if (response.ok) {
         const json = await response.json();
         console.log(JSON.stringify(json));
 
+        // get img name
+        imgName = json.data.img_name;
+        // get log name
+        logName = json.data.log_name;
+
+        // get latest version
         const socVersion = json.data.soc_version;
         console.log('SOC Version:', socVersion);
         const latestVersion = document.getElementById('latest-version');      
         latestVersion.innerHTML = socVersion;
     }
     // get current version
-    // fetch from /cgi-bin/param.cgi with param f=get_device_conf
     const response2 = await fetch('/cgi-bin/param.cgi?f=get_device_conf');
     if (response2.ok) {
         const text = await response2.text();
@@ -66,16 +72,51 @@ checkButton.addEventListener('click', async (event) => {
         version.style.display = 'block';
     }
 
+    // download files
+    // fetch firmware file
+    const response3 = await fetch('https://firmware.ptzoptics.com/F53.HI/' + imgName);
+    if (response3.ok) {
+        const blob = await response3.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.getElementById('firmware')
+        a.href = url;
+        a.download = imgName;
+    }
+    // fetch changelog file
+    const response4 = await fetch('https://firmware.ptzoptics.com/F53.HI/' + logName);
+    if (response4.ok) {
+        const blob2 = await response4.blob();
+        const url2 = URL.createObjectURL(blob2);
+        const a2 = document.getElementById('changelog');
+        a2.href = url2;
+        a2.download = logName;
+    }
 
 
 });
 
-// add event listener to the update-btn
+// add event listener to the update button
 const updateButton = document.getElementById('update-btn');
 updateButton.addEventListener('click', async (event) => {
     event.preventDefault();
+    // display spinner
+    const spinner = document.getElementById('update-spinner');
+    spinner.style.display = 'block';
+
     // fetch from /update
     const response = await fetch('/update');
     const json = await response.json();
     console.log(JSON.stringify(json));
+
+    // hide spinner and update button
+    spinner.style.display = 'none';
+    const update = document.getElementById('update');
+    update.style.display = 'none';
+
+    // display update result
+    const updateResult = document.getElementById('update-result');
+    updateResult.style.display = 'block';
+
+
+
 });

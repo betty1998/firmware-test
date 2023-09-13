@@ -8,36 +8,42 @@
 
   </head>
   <body>
-    <div class="mx-5 my-5">
-      <h1>Update PTZOptics Firmware</h1>
+    <div class="title">
+      Update PTZOptics Firmware
+    </div>
+    <div class="body">
+      <!-- upload form -->
       <form id="upload-form" enctype="multipart/form-data" class="mb-3">
-          <div class="d-flex">
+          <div class="d-flex align-items-center">
             <span class="my-auto me-3">Upload firmware:</span>
             <input class="my-auto" type="file" name="file" multiple>
 
             <input type="submit" class="btn btn-primary me-3" value="Upload files">
-            <div class="loader" style="display: none;"></div>
+            <div class="loader" id="upload-spinner" style="display: none;"></div>
           </div>
-          
       </form>
-      
-
-      <div id="update" style="display: none;">
-        <span class="text-success">Upload successfully!</span>
-        <button class="btn btn-success ms-3" id="update-btn">Update</button>
+      <!-- update section -->
+      <div class="update-container d-flex align-items-center">
+        <div id="update" style="display: none;">
+          <span class="text-success">Firmware is upload successfully!</span>
+          <button class="btn btn-success ms-3 me-3" id="update-btn">Update</button>
+        </div>
+        <div class="loader" id="update-spinner" style="display: none;"></div>
+        <div class="text-info" id="update-result" style="display: none;">Firmware is updated successfully!</div>
       </div>
-
-      <div class="check mt-2 mb-4">
+      
+      <!-- check for update -->
+      <div class="check mt-5 mb-4">
         <button class="btn btn-outline-primary" id="check-btn">Check for update</button>
       </div>
-      <div id="check-result" style="display: none;">
+      <div class="card" id="check-result" style="display: none;">
         <div class="mb-4" id="version-info">
-          <h4>Current version:</h4>
-          <div class="row mb-2">
+          <h4>Version:</h4>
+          <div class="row mt-2 mb-3">
             <div class="col-2">Latest Version:</div>
             <div class="col" id="latest-version"></div>
           </div>
-          <div class="row mb-2">
+          <div class="row mb-3">
             <div class="col-2">Current Version:</div>
             <div class="col" id="current-version"></div>
           </div>
@@ -45,18 +51,18 @@
         <div id="download">
           <h4>Download for update:</h3>
           <!-- firmware -->
-          <div class="row mt-3 mb-3">
-            <div class="col-2">firmware</div>
+          <div class="row mt-2 mb-3">
+            <div class="col-2 my-auto">firmware</div>
             <div class="col">
-              <button class="btn btn-primary download-btn" id="firmware">Download</button>
+              <a class="btn btn-primary download-btn" id="firmware">Download</a>
             </div>
             
           </div>
           <!-- changelog -->
           <div class="row">
-            <div class="col-2">changelog</div>
+            <div class="col-2 my-auto">changelog</div>
             <div class="col">
-              <button class="btn btn-primary download-btn" id="changelog">Download</button>
+              <a class="btn btn-primary download-btn" id="changelog">Download</a>
             </div>
           </div>
         </div>
