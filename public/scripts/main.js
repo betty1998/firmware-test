@@ -6,6 +6,8 @@ form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     const formData = new FormData(form);
+    const spinner = document.querySelector('div.loader');
+    spinner.style.display = 'block';
     const response = await fetch('/', {
         method: 'POST',
         body: formData
@@ -13,6 +15,9 @@ form.addEventListener('submit', async (event) => {
 
     const json = await response.json();
     console.log(JSON.stringify(json));
+    spinner.style.display = 'none';
+    const update = document.getElementById('update');
+    update.style.display = 'block';
 });
 
 // add event listener to the check button

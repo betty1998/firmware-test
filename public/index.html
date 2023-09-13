@@ -11,15 +11,18 @@
     <div class="mx-5 my-5">
       <h1>Update PTZOptics Firmware</h1>
       <form id="upload-form" enctype="multipart/form-data" class="mb-3">
-          <label>
-              Upload firmware:
-              <input type="file" name="file" multiple>
-          </label>
+          <div class="d-flex">
+            <span class="my-auto me-3">Upload firmware:</span>
+            <input class="my-auto" type="file" name="file" multiple>
 
-          <input type="submit" class="btn btn-primary" value="Upload files">
+            <input type="submit" class="btn btn-primary me-3" value="Upload files">
+            <div class="loader" style="display: none;"></div>
+          </div>
+          
       </form>
+      
 
-      <div class="update mb-5">
+      <div id="update" style="display: none;">
         <span class="text-success">Upload successfully!</span>
         <button class="btn btn-success ms-3" id="update-btn">Update</button>
       </div>
