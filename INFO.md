@@ -4,14 +4,14 @@ Please enter your name, email address, and preferred dates for an interview. We 
 
 ## Name
 
-My Name
+Beibei Qi
 
 ## Email
 
-    my.email@domain.com
+qibeibei1998@gmail.com
 
 ## Preferred Dates
-
-- October 3, afternoon
-- October 4, morning
-- October 15-17, afternoon
+Eastern Standard Time
+- October 2, morning
+- October 3, morning
+- October 4, afternoon
